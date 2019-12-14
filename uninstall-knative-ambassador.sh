@@ -12,4 +12,4 @@ echo
 echo "Uninstalling Knative"
 echo "===================="
 
-kubectl delete --filename https://github.com/knative/serving/releases/download/v0.10.0/serving-core.yaml
+kubectl delete --filename https://github.com/knative/serving/releases/download/v0.11.0/serving-core.yaml

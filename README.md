@@ -2,7 +2,7 @@
 
 The goal of this project is to setup [`Knative`](https://knative.dev/) in [`Minikube`](https://github.com/kubernetes/minikube) and then, deploy and run some [serverless](https://martinfowler.com/articles/serverless.html) applications.
 
-The setup of `Knative` in `Minikube` was mostly based on the **Knative Official Documentation (v.0.10)**: [Install on Minikube](https://knative.dev/docs/install/knative-with-minikube/), [Installing Istio for Knative](https://knative.dev/docs/install/installing-istio) and [Installing Knative with Ambassador](https://knative.dev/docs/install/knative-with-ambassador/).
+The setup of `Knative` in `Minikube` was mostly based on the **Knative Official Documentation (v0.11)**: [Install on Minikube](https://knative.dev/docs/install/knative-with-minikube/), [Installing Istio for Knative](https://knative.dev/docs/install/installing-istio) and [Installing Knative with Ambassador](https://knative.dev/docs/install/knative-with-ambassador/).
 
 ## Prerequisites
 
@@ -11,6 +11,7 @@ You must have `Kubectl`, `Minikube` and `Helm` installed in your machine. Here a
 ## Examples
 
 - ### [helloworld-go](https://github.com/ivangfr/knative-minikube-environment/tree/master/helloworld-go)
+- ### [quarkus-bookapi-native-vs-jvm](https://github.com/ivangfr/knative-minikube-environment/tree/master/quarkus-bookapi-native-vs-jvm)
 
 ## Start Environment
 
@@ -32,14 +33,14 @@ minikube start \
 
 You can pick the one you prefer
 
-- #### Install Knative & Istio
+- #### Install Knative with Istio
 
   Run the script below to install `Knative` and `Istio`
   ```
   ./install-knative-istio.sh
   ```
 
-- #### Install Knative & Ambassador
+- #### Install Knative with Ambassador
 
   Run the following script to install `Knative` and `Ambassador`
   ```
@@ -50,14 +51,14 @@ You can pick the one you prefer
 
 ### Uninstall Knative
 
-- #### Uninstall Knative & Istio
+- #### Uninstall Knative with Istio
 
   Run the script below to uninstall `Knative` and `Istio`
   ```
   ./uninstall-knative-istio.sh
   ```
 
-- #### Uninstall Knative & Ambassador
+- #### Uninstall Knative with Ambassador
 
   Run the following script to uninstall `Knative` and `Ambassador`
   ```
@@ -75,3 +76,27 @@ The command shuts down and deletes the `Minikube Virtual Machine`. No data or st
 ```
 minikube delete
 ```
+
+## Troubleshooting
+
+- ### 404 Not Found
+
+  Sometimes, after installing a service and making a request to it, you get `404 Not Found` as response. Honestly, the only way I know to solve is to delete (`kubectl delete`) and apply (`kubectl apply`) the service again.
+  
+  Here are some steps that can help you to troubleshoot it
+  
+  - Run the command below and check the value in the column `READY`. It must be `True`
+    ```
+    kubectl get ksvc --namespace dev
+    ```
+    
+  - Get more information about the service, describing it
+    ```
+    kubectl describe ksvc --namespace dev <service-name>
+    ```
+
+- ### 504 Gateway Timeout
+
+  When using `Knative` with `Ambassador` you can get `504 Gateway Timeout` as response. That is because `Ambassador` has a timeout of `3000 ms`. So, the `Knative` cluster doesn't have time to start a `Pod` to handle the request.
+  
+  Subsequents requests will work as the `Pod` is already up and running.

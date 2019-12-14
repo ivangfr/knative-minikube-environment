@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script was implemented based on the Knative Official Documentation (v.0.10)
+# This script was implemented based on the Knative Official Documentation (v0.11)
 # - Installing Knative with Ambassador: https://knative.dev/docs/install/knative-with-ambassador/
 
 echo
@@ -11,13 +11,13 @@ echo
 echo "Install Knative CRDs"
 echo "--------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.10.0/serving-crds.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.11.0/serving-crds.yaml
 
 echo
 echo "Complete install of Knative and its dependencies"
 echo "------------------------------------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.10.0/serving-core.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.11.0/serving-core.yaml
 
 
 echo

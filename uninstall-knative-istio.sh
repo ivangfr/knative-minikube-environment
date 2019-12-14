@@ -4,12 +4,11 @@ echo
 echo "Uninstalling Knative"
 echo "===================="
 
-# Note: The file `monitoring.yaml` is not added because it is failing, [Issue 6073](https://github.com/knative/serving/issues/6073)
-
+# Note: Monitoring was disabled because it's too heavy for Minikube
 kubectl delete \
-   --filename https://github.com/knative/serving/releases/download/v0.10.0/serving.yaml \
-   --filename https://github.com/knative/eventing/releases/download/v0.10.0/release.yaml \
-   `# --filename https://github.com/knative/serving/releases/download/v0.10.0/monitoring.yaml`
+   --filename https://github.com/knative/serving/releases/download/v0.11.0/serving.yaml \
+   --filename https://github.com/knative/eventing/releases/download/v0.11.0/release.yaml \
+   `#--filename https://github.com/knative/serving/releases/download/v0.11.0/monitoring.yaml`
 
 echo
 echo "Uninstalling Istio"

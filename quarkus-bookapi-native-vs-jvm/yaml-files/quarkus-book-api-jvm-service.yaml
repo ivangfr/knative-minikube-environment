@@ -1,0 +1,12 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: quarkus-book-api-jvm
+spec:
+  template:
+    spec:
+      containers:
+        - image: ivanfranchin/quarkus-book-api-jvm:1.0.0
+          env:
+            - name: MYSQL_HOST
+              value: my-mysql

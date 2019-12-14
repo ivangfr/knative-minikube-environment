@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script was implemented based on the Knative Official Documentation (v.0.10)
+# This script was implemented based on the Knative Official Documentation (v0.11)
 # - Install on Minikube: https://knative.dev/docs/install/knative-with-minikube/
 # - Installing Istio for Knative: https://knative.dev/docs/install/installing-istio
 
@@ -80,24 +80,22 @@ echo
 echo "Install Knative CRDs"
 echo "--------------------"
 
-# Note: The file `monitoring.yaml` is not added because it is failing, [Issue 6073](https://github.com/knative/serving/issues/6073)
-
+# Note: Monitoring was disabled because it's too heavy for Minikube
 kubectl apply \
    --selector knative.dev/crd-install=true \
-   --filename https://github.com/knative/serving/releases/download/v0.10.0/serving.yaml \
-   --filename https://github.com/knative/eventing/releases/download/v0.10.0/release.yaml \
-   `# --filename https://github.com/knative/serving/releases/download/v0.10.0/monitoring.yaml`
+   --filename https://github.com/knative/serving/releases/download/v0.11.0/serving.yaml \
+   --filename https://github.com/knative/eventing/releases/download/v0.11.0/release.yaml \
+   `#--filename https://github.com/knative/serving/releases/download/v0.11.0/monitoring.yaml`
 
 echo
 echo "Complete install of Knative and its dependencies"
 echo "------------------------------------------------"
 
-# Note: The file `monitoring.yaml` is not added because it is failing, [Issue 6073](https://github.com/knative/serving/issues/6073)
-
+# Note: Monitoring was disabled because it's too heavy for Minikube
 kubectl apply \
-   --filename https://github.com/knative/serving/releases/download/v0.10.0/serving.yaml \
-   --filename https://github.com/knative/eventing/releases/download/v0.10.0/release.yaml \
-   `# --filename https://github.com/knative/serving/releases/download/v0.10.0/monitoring.yaml`
+   --filename https://github.com/knative/serving/releases/download/v0.11.0/serving.yaml \
+   --filename https://github.com/knative/eventing/releases/download/v0.11.0/release.yaml \
+   `#--filename https://github.com/knative/serving/releases/download/v0.11.0/monitoring.yaml`
 
 echo
 echo "Istio External IP Address"
