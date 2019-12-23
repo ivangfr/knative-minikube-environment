@@ -12,7 +12,7 @@ echo
 echo "Download and unpack Istio"
 echo "========================="
 
-export ISTIO_VERSION=1.4.1
+export ISTIO_VERSION=1.4.2 # Check https://github.com/istio/istio/releases/ for new releases
 curl -L https://git.io/getLatestIstio | sh -
 cd istio-${ISTIO_VERSION}
 
@@ -54,7 +54,7 @@ helm template --namespace=istio-system \
 	--set global.proxy.autoInject=disabled \
 	--set global.omitSidecarInjectorConfigMap=true \
 	--set gateways.istio-ingressgateway.autoscaleMin=1 \
-	--set gateways.istio-ingressgateway.autoscaleMax=5 \
+	--set gateways.istio-ingressgateway.autoscaleMax=2 \
 	`# Set pilot trace sampling to 100%` \
 	--set pilot.traceSampling=100 \
 	install/kubernetes/helm/istio \

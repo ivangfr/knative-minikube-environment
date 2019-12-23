@@ -1,10 +1,15 @@
 /istio-*
 
-HELP.md
+Thumbs.db
+.gradle
+build/
 target/
-!.mvn/wrapper/maven-wrapper.jar
+bin/
+!gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+
+*.DS_Store
 
 ### STS ###
 .apt_generated
@@ -20,6 +25,7 @@ target/
 *.iws
 *.iml
 *.ipr
+out/
 
 ### NetBeans ###
 /nbproject/private/
@@ -27,7 +33,6 @@ target/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
 
 ### VS Code ###
 .vscode/

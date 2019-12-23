@@ -1,12 +1,17 @@
 # `knative-minikube-environment`
 
-The goal of this project is to setup [`Knative`](https://knative.dev/) in [`Minikube`](https://github.com/kubernetes/minikube) and then, deploy and run some [serverless](https://martinfowler.com/articles/serverless.html) applications.
+The goal of this project is to setup [`Knative`](https://knative.dev/) in [`Minikube`](https://github.com/kubernetes/minikube) and then, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
 
 The setup of `Knative` in `Minikube` was mostly based on the **Knative Official Documentation (v0.11)**: [Install on Minikube](https://knative.dev/docs/install/knative-with-minikube/), [Installing Istio for Knative](https://knative.dev/docs/install/installing-istio) and [Installing Knative with Ambassador](https://knative.dev/docs/install/knative-with-ambassador/).
 
 ## Prerequisites
 
-You must have `Kubectl`, `Minikube` and `Helm` installed in your machine. Here are the links to websites that explain how to install [`Kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/), [`Minikube`](https://kubernetes.io/docs/tasks/tools/install-minikube/) and [`Helm`](https://helm.sh/docs/intro/install/)
+You must have installed in your machine:
+- a recent version of [`Apache Maven`](https://maven.apache.org/)
+- [`JDK 1.8`](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or later
+- `Kubectl` (how to install [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/))
+- `Minikube` (how to install [here](https://kubernetes.io/docs/tasks/tools/install-minikube/))
+- `Kubeless CLI` (can be downloaded from the [release page](https://github.com/kubeless/kubeless/releases))
 
 ## Examples
 
@@ -79,10 +84,10 @@ minikube delete
 
 ## Troubleshooting
 
-- ### 404 Not Found
+- ### Service not READY
 
-  Sometimes, after installing a service and making a request to it, you get `404 Not Found` as response. Honestly, the only way I know to solve is to delete (`kubectl delete`) and apply (`kubectl apply`) the service again.
-  
+  After installing a service and checking its status, it get stays at `READY: False; REASON: RevisionMissing`. The only way I know to solve is to delete (`kubectl delete`) and apply (`kubectl apply`) the service again.
+
   Here are some steps that can help you to troubleshoot it
   
   - Run the command below and check the value in the column `READY`. It must be `True`
@@ -95,6 +100,10 @@ minikube delete
     kubectl describe ksvc --namespace dev <service-name>
     ```
 
+- ### 404 Not Found
+
+  Usually, it happens when the service is not READY. See [Service not READY](#service-not-ready)
+  
 - ### 504 Gateway Timeout
 
   When using `Knative` with `Ambassador` you can get `504 Gateway Timeout` as response. That is because `Ambassador` has a timeout of `3000 ms`. So, the `Knative` cluster doesn't have time to start a `Pod` to handle the request.

@@ -25,7 +25,7 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
    ```
    kubectl get ksvc helloworld-go
    ```
-   > **Note:** Before continue, verify if the service has value `True` in the column `READY`. Check [Troubleshooting](https://github.com/ivangfr/knative-minikube-environment#shutdown-minikube) in case it's `False`.
+   > **Note:** Before continue, verify if the service has value `True` in the column `READY`. Check [Troubleshooting](https://github.com/ivangfr/knative-minikube-environment#troubleshooting) in case it's `False`.
 
 1. Make requests to the service
    
