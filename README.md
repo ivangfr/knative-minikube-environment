@@ -7,8 +7,6 @@ The setup of `Knative` in `Minikube` was mostly based on the **Knative Official 
 ## Prerequisites
 
 You must have installed in your machine:
-- a recent version of [`Apache Maven`](https://maven.apache.org/)
-- [`JDK 1.8`](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) or later
 - `Kubectl` (how to install [here](https://kubernetes.io/docs/tasks/tools/install-kubectl/))
 - `Minikube` (how to install [here](https://kubernetes.io/docs/tasks/tools/install-minikube/))
 - `Kubeless CLI` (can be downloaded from the [release page](https://github.com/kubeless/kubeless/releases))
