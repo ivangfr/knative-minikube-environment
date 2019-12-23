@@ -1,4 +1,4 @@
-# `knative-minukube-environment`
+# `knative-minikube-environment`
 ## `> quarkus-bookapi-native-vs-jvm`
 
 The goal of this example is to run in `Knative` cluster an application called `quarkus-book-api` whose source code can be found [here](https://github.com/ivangfr/graalvm-quarkus-micronaut-springboot/tree/master/book-api/quarkus-book-api).
@@ -15,7 +15,7 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 
 ## Start Environment
 
-1. Open a terminal and navigate to `knative-minukube-environment/quarkus-bookapi-native-vs-jvm`
+1. Open a terminal and navigate to `knative-minikube-environment/quarkus-bookapi-native-vs-jvm`
 
 1. Create the `dev` namespace 
    ```
@@ -43,7 +43,7 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 
 ## Install quarkus-book-api-native Service
 
-1. In a terminal and inside `knative-minukube-environment/quarkus-bookapi-native-vs-jvm`, run the following command to install the service
+1. In a terminal and inside `knative-minikube-environment/quarkus-bookapi-native-vs-jvm`, run the following command to install the service
    ```
    kubectl apply --namespace dev -f yaml-files/quarkus-book-api-native-service.yaml
    ```
@@ -102,7 +102,7 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 
 ## Install quarkus-book-api-jvm service
 
-1. In a terminal and inside `knative-minukube-environment/quarkus-bookapi-native-vs-jvm`, run the following command to install the service
+1. In a terminal and inside `knative-minikube-environment/quarkus-bookapi-native-vs-jvm`, run the following command to install the service
    ```
    kubectl apply --namespace dev -f yaml-files/quarkus-book-api-jvm-service.yaml
    ```

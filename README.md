@@ -84,7 +84,7 @@ minikube delete
 
 - ### Service not READY
 
-  After installing a service and checking its status, it get stays at `READY: False; REASON: RevisionMissing`. The only way I know to solve is to delete (`kubectl delete`) and apply (`kubectl apply`) the service again.
+  After installing a service and checking its status, it stays at `READY: False; REASON: RevisionMissing`. The only way I know to solve it is to delete (`kubectl delete`) and apply (`kubectl apply`) the service again.
 
   Here are some steps that can help you to troubleshoot it
   
@@ -100,7 +100,7 @@ minikube delete
 
 - ### 404 Not Found
 
-  Usually, it happens when the service is not READY. See [Service not READY](#service-not-ready)
+  Usually, it happens when the service is not `READY`. See [Service not READY](#service-not-ready)
   
 - ### 504 Gateway Timeout
 

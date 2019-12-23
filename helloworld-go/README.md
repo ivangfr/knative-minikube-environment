@@ -1,4 +1,4 @@
-# `knative-minukube-environment`
+# `knative-minikube-environment`
 ## `> helloworld-go`
 
 The goal of this example is to run in `Knative` cluster the [`helloworld-go`](https://knative.dev/docs/serving/samples/hello-world/helloworld-go/index.html)
@@ -9,7 +9,7 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 
 ## Install helloworld-go Service
 
-1. Open a terminal and navigate to `knative-minukube-environment/helloworld-go`
+1. Open a terminal and navigate to `knative-minikube-environment/helloworld-go`
 
 1. Install `helloworld-go` service by running the following `kubectl apply` command
    ```
