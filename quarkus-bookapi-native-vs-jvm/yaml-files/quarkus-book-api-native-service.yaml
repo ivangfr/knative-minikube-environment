@@ -2,6 +2,7 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: quarkus-book-api-native
+  namespace: dev
 spec:
   template:
     spec:
