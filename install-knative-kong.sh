@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-# This script was implemented based on the Knative Official Documentation (v0.15)
-
+# This script was implemented based on the Knative Official Documentation (v0.23)
 
 echo
 echo "Installing Knative & Kong"
@@ -15,14 +14,13 @@ echo
 echo "Install the Custom Resource Definitions (aka CRDs)"
 echo "--------------------------------------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.15.0/serving-crds.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.23.0/serving-crds.yaml
 
 echo
 echo "Install the core components of Serving"
 echo "--------------------------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/v0.15.0/serving-core.yaml
-
+kubectl apply --filename https://github.com/knative/serving/releases/download/v0.23.0/serving-core.yaml
 
 echo
 echo "Install Kong Ingress Controller"

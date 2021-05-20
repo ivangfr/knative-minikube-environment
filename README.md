@@ -1,8 +1,8 @@
 # knative-minikube-environment
 
-The goal of this project is to setup [`Knative`](https://knative.dev/) in [`Minikube`](https://github.com/kubernetes/minikube) and then, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
+The goal of this project is to set up [`Knative`](https://knative.dev/) in [`Minikube`](https://github.com/kubernetes/minikube) and, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
 
-The setup of `Knative` was mostly based on the [**Knative Official Documentation (v0.15)**](https://knative.dev/docs/install/any-kubernetes-cluster/), except for some details about installing on Minikube that was based on [**Knative Official Documentation (v0.12)**](https://knative.dev/v0.12-docs/install/knative-with-minikube/)
+The `Knative` setup was mostly based on the [**Knative Official Documentation (v0.23)**](https://knative.dev/docs/install/install-serving-with-yaml/)
 
 ## Prerequisites
 
@@ -13,27 +13,22 @@ The setup of `Knative` was mostly based on the [**Knative Official Documentation
 ## Examples
 
 - ### [helloworld-go](https://github.com/ivangfr/knative-minikube-environment/tree/master/helloworld-go)
-- ### [quarkus-bookapi-native-vs-jvm](https://github.com/ivangfr/knative-minikube-environment/tree/master/quarkus-bookapi-native-vs-jvm)
+- ### [quarkus-jpa-mysql-native-vs-jvm](https://github.com/ivangfr/knative-minikube-environment/tree/master/quarkus-jpa-mysql-native-vs-jvm)
 
 ## Start Environment
 
 - ### Start Minikube
 
-  In a terminal, run the command below to start `Minikube`
+  Open a terminal and run the following command to start `Minikube`
   ```
-  minikube start \
-    --memory=8192 \
-    --cpus=4 \
-    --vm-driver=virtualbox \
-    --disk-size=30g \
-    --extra-config=apiserver.enable-admission-plugins="LimitRanger,NamespaceExists,NamespaceLifecycle,ResourceQuota,ServiceAccount,DefaultStorageClass,MutatingAdmissionWebhook"
+  minikube start --memory=8192 --cpus=4 --vm-driver=virtualbox
   ```
 
 - ### Install Knative & Kong
 
   `Knative` depends on a Service Gateway to handle traffic routing and ingress. In this tutorial, we will use [`Kong`](https://konghq.com/kong/).
 
-  Run the script below to install `Knative` and `Kong`
+  In a terminal, make sure you are in `knative-minikube-environment` root folder and run the script below to install `Knative` and `Kong`
   ```
   ./install-knative-kong.sh
   ```
@@ -44,7 +39,24 @@ The setup of `Knative` was mostly based on the [**Knative Official Documentation
   ```
   > Press `Ctrl+C` to stop the watching mode
   
-  Wait for all pods in `knative-serving` and `kong` namespaces to the have `Running` value in the `STATUS` column before proceeding to the examples.
+  Wait for all pods in `knative-serving` and `kong` namespaces to the have `Running` value in the `STATUS` column before running the examples.
+
+  You should see something like
+  ```
+  NAMESPACE         NAME                               READY   STATUS    RESTARTS   AGE
+  knative-serving   activator-8586b94b8b-59q6f         1/1     Running   0          2m7s
+  knative-serving   autoscaler-55b786c8b8-xrplb        1/1     Running   0          2m7s
+  knative-serving   controller-5f47f4d7c5-g4l7n        1/1     Running   0          2m7s
+  knative-serving   webhook-5f755b99b9-s7vjr           1/1     Running   0          2m7s
+  kong              ingress-kong-c7c8668d-dxdbk        2/2     Running   0          2m6s
+  kube-system       coredns-74ff55c5b-5j8db            1/1     Running   0          2m58s
+  kube-system       etcd-minikube                      1/1     Running   0          3m12s
+  kube-system       kube-apiserver-minikube            1/1     Running   0          3m12s
+  kube-system       kube-controller-manager-minikube   1/1     Running   0          3m12s
+  kube-system       kube-proxy-njftg                   1/1     Running   0          2m58s
+  kube-system       kube-scheduler-minikube            1/1     Running   0          3m12s
+  kube-system       storage-provisioner                1/1     Running   1          3m12s
+  ```
 
 ## Shutdown Environment
 

@@ -1,13 +1,15 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: quarkus-book-api-native
+  name: quarkus-jpa-mysql-jvm
   namespace: dev
 spec:
   template:
     spec:
       containers:
-        - image: ivanfranchin/quarkus-book-api-native:1.0.0
+        - image: ivanfranchin/quarkus-jpa-mysql-jvm:1.0.0
           env:
             - name: MYSQL_HOST
               value: my-mysql
+            - name: QUARKUS_PROFILE
+              value: database-generation-update,native

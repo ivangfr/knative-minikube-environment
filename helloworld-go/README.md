@@ -11,14 +11,14 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 
 1. Open a terminal and navigate to `knative-minikube-environment/helloworld-go` folder
 
-1. Let's pull `helloworld-go` Docker image so when we install the service, its image is already present
+1. Let's pull `helloworld-go` Docker image so, when we install the service, the image is already present
 
    1. Set `Minikube` host
       ```
       eval $(minikube docker-env)
       ```
       
-   1. Pull `MySQL` and `quarkus-book-api`'s docker images
+   1. Pull `helloworld-go` docker image
       ```
       docker pull gcr.io/knative-samples/helloworld-go
       ```
@@ -57,7 +57,7 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
    kubectl describe --namespace dev ksvc helloworld-go
    ```
 
-1. Before continue, verify if the service is ready to receive requests. For it, run
+1. Before continue, verify if the service is ready to receive requests
    ```
    kubectl get ksvc --namespace dev
    ```
@@ -71,15 +71,21 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
       ../get-kong-external-ip-address.sh
       ```
         
-   1. Export the output to a terminal
+   1. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
       ```
-      export EXTERNAL_IP_ADDRESS=...
+      EXTERNAL_IP_ADDRESS=...
       ``` 
 
    1. Call endpoint using `curl`
       ```
       curl -i -H "Host: helloworld-go.dev.example.com" http://$EXTERNAL_IP_ADDRESS
       ```
+      
+   1. Start watching the pods in `dev` namespace
+      ```
+      kubectl get pods -n dev -w
+      ```
+      And wait a bit without making any requests, you will see that kubernetes will scale to `0` the number of `helloworld-go` pods
 
 ## Cleanup
 
