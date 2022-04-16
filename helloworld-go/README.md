@@ -5,7 +5,7 @@ The goal of this example is to run in `Knative` cluster the [`helloworld-go`](ht
 
 ## Start Minikube and install Knative
 
-First of all, start `Minikube` and install `Knative` as explained at [Start Environment](https://github.com/ivangfr/knative-minikube-environment#start-environment) in the main README.
+First, start `Minikube` and install `Knative` as explained at [Start Environment](https://github.com/ivangfr/knative-minikube-environment#start-environment) in the main README.
 
 ## Install helloworld-go Service
 
@@ -39,16 +39,16 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 
 1. Install `helloworld-go` service by running the following `kubectl apply` command
    ```
-   kubectl apply --namespace dev -f helloworld-go-service.yaml
+   kubectl apply --namespace dev --filename helloworld-go-service.yaml
    ```
    > To delete run
    > ```
-   > kubectl delete --namespace dev -f helloworld-go-service.yaml
+   > kubectl delete --namespace dev --filename helloworld-go-service.yaml
    > ```
 
 1. You can watch the service installation by running
    ```
-   kubectl get pods --namespace dev -w
+   kubectl get pods --namespace dev --watch
    ```
    > Press `Ctrl+C` to stop the watching mode
 
@@ -66,9 +66,9 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 
 1. Make requests to the service
    
-   1. Get `Kong` Ingress Gateway IP Address
+   1. Get `Kourier` Ingress Gateway IP Address
       ```
-      ../get-kong-external-ip-address.sh
+      ../get-kourier-external-ip-address.sh
       ```
         
    1. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
@@ -83,9 +83,12 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
       
    1. Start watching the pods in `dev` namespace
       ```
-      kubectl get pods -n dev -w
+      kubectl get pods --namespace dev --watch
       ```
-      And wait a bit without making any requests, you will see that kubernetes will scale to `0` the number of `helloworld-go` pods
+      
+      Wait a bit without making any requests, you will see that kubernetes will terminate the `helloworld-go` pod.
+
+      By calling the endpoint again, a new `helloworld-go` pod will be created.
 
 ## Cleanup
 

@@ -1,13 +1,13 @@
 # knative-minikube-environment
 
-The goal of this project is to set up [`Knative`](https://knative.dev/) in [`Minikube`](https://github.com/kubernetes/minikube) and, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
+The goal of this project is to set up [`Knative`](https://knative.dev/docs/) in [`Minikube`](https://minikube.sigs.k8s.io/docs/start/) and, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
 
-The `Knative` setup was mostly based on the [**Knative Official Documentation (v0.23)**](https://knative.dev/docs/install/install-serving-with-yaml/)
+The `Knative` setup was mostly based on the [**Knative Official Documentation (v1.3)**](https://knative.dev/docs/install/)
 
 ## Prerequisites
 
-- [`Kubectl`](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-- [`Minikube`](https://kubernetes.io/docs/tasks/tools/install-minikube/)
+- [`Kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [`Minikube`](https://minikube.sigs.k8s.io/docs/start/)
 - [`Helm`](https://helm.sh/docs/intro/install/)
 
 ## Examples
@@ -24,47 +24,50 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
   minikube start --memory=8192 --cpus=4 --vm-driver=virtualbox
   ```
 
-- ### Install Knative & Kong
+- ### Install Knative Serving
 
-  `Knative` depends on a Service Gateway to handle traffic routing and ingress. In this tutorial, we will use [`Kong`](https://konghq.com/kong/).
+  `Knative` depends on a Service Gateway to handle traffic routing and ingress. In this tutorial, we will use [`Kourier`](https://github.com/knative-sandbox/net-kourier).
 
-  In a terminal, make sure you are in `knative-minikube-environment` root folder and run the script below to install `Knative` and `Kong`
+  In a terminal, make sure you are in `knative-minikube-environment` root folder and run the script below
   ```
-  ./install-knative-kong.sh
+  ./install-knative-serving-kourier.sh
   ```
   
   To verify Readiness and Status of all pods by running
   ```
-  kubectl get pods --all-namespaces -w
+  kubectl get pods --all-namespaces --watch
   ```
   > Press `Ctrl+C` to stop the watching mode
   
-  Wait for all pods in `knative-serving` and `kong` namespaces to the have `Running` value in the `STATUS` column before running the examples.
+  Wait for all pods in `knative-serving` and `kourier-system` namespaces to the have `Running` value in the `STATUS` column before running the examples.
 
   You should see something like
   ```
-  NAMESPACE         NAME                               READY   STATUS    RESTARTS   AGE
-  knative-serving   activator-8586b94b8b-59q6f         1/1     Running   0          2m7s
-  knative-serving   autoscaler-55b786c8b8-xrplb        1/1     Running   0          2m7s
-  knative-serving   controller-5f47f4d7c5-g4l7n        1/1     Running   0          2m7s
-  knative-serving   webhook-5f755b99b9-s7vjr           1/1     Running   0          2m7s
-  kong              ingress-kong-c7c8668d-dxdbk        2/2     Running   0          2m6s
-  kube-system       coredns-74ff55c5b-5j8db            1/1     Running   0          2m58s
-  kube-system       etcd-minikube                      1/1     Running   0          3m12s
-  kube-system       kube-apiserver-minikube            1/1     Running   0          3m12s
-  kube-system       kube-controller-manager-minikube   1/1     Running   0          3m12s
-  kube-system       kube-proxy-njftg                   1/1     Running   0          2m58s
-  kube-system       kube-scheduler-minikube            1/1     Running   0          3m12s
-  kube-system       storage-provisioner                1/1     Running   1          3m12s
+  NAMESPACE         NAME                                      READY   STATUS    RESTARTS        AGE
+  knative-serving   activator-66bcc86b86-p5xwd                1/1     Running   0               4m53s
+  knative-serving   autoscaler-6b88c666fc-2phfx               1/1     Running   0               4m53s
+  knative-serving   controller-59c69fb58d-c5ntd               1/1     Running   0               4m53s
+  knative-serving   domain-mapping-5c4b8d79f-tjqkt            1/1     Running   0               4m53s
+  knative-serving   domainmapping-webhook-777f47b8bb-7jmsv    1/1     Running   0               4m53s
+  knative-serving   net-kourier-controller-74dc74797-jtxcl    1/1     Running   0               4m51s
+  knative-serving   webhook-6d6d8c5b4f-xhscq                  1/1     Running   0               4m53s
+  kourier-system    3scale-kourier-gateway-75c75885fd-w8jnk   1/1     Running   0               4m51s
+  kube-system       coredns-64897985d-hxppc                   1/1     Running   0               5m42s
+  kube-system       etcd-minikube                             1/1     Running   0               5m57s
+  kube-system       kube-apiserver-minikube                   1/1     Running   0               5m54s
+  kube-system       kube-controller-manager-minikube          1/1     Running   0               5m54s
+  kube-system       kube-proxy-kbf7w                          1/1     Running   0               5m42s
+  kube-system       kube-scheduler-minikube                   1/1     Running   0               5m54s
+  kube-system       storage-provisioner                       1/1     Running   1 (5m12s ago)   5m53s
   ```
 
 ## Shutdown Environment
 
-- ### Uninstall Knative & Kong
+- ### Uninstall Knative Serving
 
-  Run the script below to uninstall `Knative` and `Kong`
+  Run the script below to uninstall `Knative` and `Kourier`
   ```
-  ./uninstall-knative-kong.sh
+  ./uninstall-knative-serving-kourier.sh
   ```
 
 - ### Shutdown Minikube
@@ -94,7 +97,7 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
 
   - Get more information about the service, describing it
     ```
-    kubectl describe ksvc --namespace dev <service-name>
+    kubectl describe ksvc <service-name> --namespace dev
     ```
 
 - **404 Not Found**

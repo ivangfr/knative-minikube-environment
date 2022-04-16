@@ -13,7 +13,7 @@ More about the comparison between `JVM` vs `Native` and among Java Frameworks ca
 
 ## Start Minikube and Install Knative
 
-First of all, start `Minikube` and install `Knative` as explained at [Start Environment](https://github.com/ivangfr/knative-minikube-environment#start-environment) in the main README.
+First, start `Minikube` and install `Knative` as explained at [Start Environment](https://github.com/ivangfr/knative-minikube-environment#start-environment) in the main README.
 
 ## Start Environment
 
@@ -28,9 +28,9 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
       
    1. Pull `MySQL` and `quarkus-jpa-mysql`'s docker images
       ```
-      docker pull bitnami/mysql:5.7.34-debian-10-r26
-      docker pull ivanfranchin/quarkus-jpa-mysql-jvm:1.0.0
+      docker pull bitnami/mysql:5.7.37-debian-10-r85
       docker pull ivanfranchin/quarkus-jpa-mysql-native:1.0.0
+      docker pull ivanfranchin/quarkus-jpa-mysql-jvm:1.0.0
       ```
       
    1. Get back to Host machine Docker Daemon
@@ -50,13 +50,13 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 1. Run the `helm` command below to install `MySQL` using its Helm Chart
    ```
    helm install my-mysql \
-   --namespace dev \
-   --set image.tag=5.7.34-debian-10-r26 \
-   --set auth.rootPassword=secret \
-   --set auth.database=bookdb_native \
-   --set primary.persistence.enabled=false \
-   --set secondary.replicaCount=0 \
-   bitnami/mysql
+     --namespace dev \
+     --set image.tag=5.7.37-debian-10-r85 \
+     --set auth.rootPassword=secret \
+     --set auth.database=bookdb_native \
+     --set primary.persistence.enabled=false \
+     --set secondary.replicaCount=0 \
+     bitnami/mysql
    ```
    > To delete run
    > ```
@@ -94,9 +94,9 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
    
 1. Make requests to the service
    
-   1. Get `Kong` Ingress Gateway IP Address
+   1. Get `Kourier` Ingress Gateway IP Address
       ```
-      ../get-kong-external-ip-address.sh
+      ../get-kourier-external-ip-address.sh
       ```
 
    1. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
@@ -153,9 +153,9 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
    
 1. Make requests to the service
    
-   1. Get `Kong` Ingress Gateway IP Address
+   1. Get `Kourier` Ingress Gateway IP Address
       ```
-      ../get-kong-external-ip-address.sh
+      ../get-kourier-external-ip-address.sh
       ```
         
    1. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
@@ -188,21 +188,21 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 1. Watching Pods in `dev` namespace. Just `MySQL` is running.
    ```
    $ kubectl get pods --namespace dev --watch
+   
    NAME         READY   STATUS    RESTARTS   AGE
-   my-mysql-0   1/1     Running   0          12m
+   my-mysql-0   1/1     Running   0          13m
    ```
    
 1. Calling get all books. The response was returned in `2778 ms`
    ```
    $ curl -i -H "Host: quarkus-jpa-mysql-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
+   
    HTTP/1.1 200 OK
-   Content-Type: application/json
-   Content-Length: 94
-   Connection: keep-alive
-   Date: Thu, 20 May 2021 14:17:25 GMT
-   X-Kong-Upstream-Latency: 1301
-   X-Kong-Proxy-Latency: 0
-   Via: kong/2.0.5
+   content-length: 94
+   content-type: application/json
+   date: Sat, 16 Apr 2022 14:24:34 GMT
+   x-envoy-upstream-service-time: 1999
+   server: envoy
    
    [{"id":1,"isbn":"123","title":"Learn Knative"},{"id":2,"isbn":"124","title":"Learn Minikube"}]
    ```
@@ -210,19 +210,18 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 1. Watching `quarkus-jpa-mysql-native` Pod changing from `ContainerCreating`, `Running` to `Terminating`
    ```
    $ kubectl get pods --namespace dev --watch
+   
    NAME         READY   STATUS    RESTARTS   AGE
-   my-mysql-0   1/1     Running   0          12m
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   0/2     Pending   0          0s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   0/2     Pending   0          0s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   0/2     ContainerCreating   0          0s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   1/2     Running             0          1s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   1/2     Running             0          1s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   2/2     Running             0          1s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   2/2     Terminating         0          62s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   1/2     Terminating         0          64s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   0/2     Terminating         0          95s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   0/2     Terminating         0          103s
-   quarkus-jpa-mysql-native-00001-deployment-79fb8c4447-w2q8h   0/2     Terminating         0          103s
+   my-mysql-0   1/1     Running   0          13m
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   0/2     Pending   0          0s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   0/2     Pending   0          0s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   0/2     ContainerCreating   0          0s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   1/2     Running             0          1s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   2/2     Running             0          1s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   2/2     Terminating         0          63s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   0/2     Terminating         0          94s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   0/2     Terminating         0          94s
+   quarkus-jpa-mysql-native-00001-deployment-6bffd467ff-47dhg   0/2     Terminating         0          94s
    ```
    
 ### quarkus-jpa-mysql-jvm
@@ -230,21 +229,21 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 1. Watching Pods in `dev` namespace. Just `MySQL` is running.
    ```
    $ kubectl get pods --namespace dev --watch
+   
    NAME         READY   STATUS    RESTARTS   AGE
-   my-mysql-0   1/1     Running   0          19m
+   my-mysql-0   1/1     Running   0          15m
    ```
    
 1. Calling get all books. The response was returned in `11952 ms`
    ```
    $ curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
+
    HTTP/1.1 200 OK
-   Content-Type: application/json
-   Content-Length: 94
-   Connection: keep-alive
-   Date: Thu, 20 May 2021 14:23:59 GMT
-   X-Kong-Upstream-Latency: 3537
-   X-Kong-Proxy-Latency: 0
-   Via: kong/2.0.5
+   content-length: 94
+   content-type: application/json
+   date: Sat, 16 Apr 2022 14:27:51 GMT
+   x-envoy-upstream-service-time: 3530
+   server: envoy
    
    [{"id":1,"isbn":"123","title":"Learn Knative"},{"id":2,"isbn":"124","title":"Learn Minikube"}]
    ```
@@ -252,19 +251,18 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 1. Watching `quarkus-jpa-mysql-jvm` Pod changing from `ContainerCreating`, `Running` to `Terminating`
    ```
    $ kubectl get pods --namespace dev --watch
+
    NAME         READY   STATUS    RESTARTS   AGE
-   my-mysql-0   1/1     Running   0          19m
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   0/2     Pending   0          0s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   0/2     Pending   0          0s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   0/2     ContainerCreating   0          0s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   1/2     Running             0          2s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   1/2     Running             0          3s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   2/2     Running             0          4s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   2/2     Terminating         0          64s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   1/2     Terminating         0          67s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   0/2     Terminating         0          97s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   0/2     Terminating         0          101s
-   quarkus-jpa-mysql-jvm-00001-deployment-578c596c69-cml2m   0/2     Terminating         0          101s
+   my-mysql-0   1/1     Running   0          15m
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   0/2     Pending   0          0s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   0/2     Pending   0          0s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   0/2     ContainerCreating   0          0s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   1/2     Running             0          2s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   2/2     Running             0          3s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   2/2     Terminating         0          66s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   0/2     Terminating         0          98s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   0/2     Terminating         0          98s
+   quarkus-jpa-mysql-jvm-00001-deployment-7f98d4d6d4-p5x5b   0/2     Terminating         0          98s
    ```
 
 ## Native vs JVM Comparison
@@ -272,9 +270,9 @@ First of all, start `Minikube` and install `Knative` as explained at [Start Envi
 The `Response Time` present in the comparison table below was obtained from the 1st request made to the services
 
 | Service                  | Request        | Response Time | App startup |
-| ------------------------ | -------------- | ------------- | ----------- |
-| quarkus-jpa-mysql-native | GET /api/books |       1301 ms |       39 ms |
-| quarkus-jpa-mysql-jvm    | GET /api/books |       3537 ms |     1670 ms |
+|--------------------------|----------------|---------------|-------------|
+| quarkus-jpa-mysql-native | GET /api/books | 1999 ms       | 37 ms       |
+| quarkus-jpa-mysql-jvm    | GET /api/books | 3530 ms       | 1753 ms     |
 
 By saying _1st request_, it means that the `Response Time` has included in it the sum of the following times:
 - time for the caller's request to reach `Knative` cluster;
