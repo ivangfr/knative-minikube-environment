@@ -14,6 +14,7 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
 
 - ### [helloworld-go](https://github.com/ivangfr/knative-minikube-environment/tree/master/helloworld-go)
 - ### [quarkus-jpa-mysql-native-vs-jvm](https://github.com/ivangfr/knative-minikube-environment/tree/master/quarkus-jpa-mysql-native-vs-jvm)
+- ### [springboot-producer-consumer-native](https://github.com/ivangfr/knative-minikube-environment/tree/master/springboot-producer-consumer-native)
 
 ## Start Environment
 
@@ -24,13 +25,12 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
   minikube start --memory=8192 --cpus=4 --vm-driver=virtualbox
   ```
 
-- ### Install Knative Serving
+- ### Install Knative Serving & Eventing
 
-  `Knative` depends on a Service Gateway to handle traffic routing and ingress. In this tutorial, we will use [`Kourier`](https://github.com/knative-sandbox/net-kourier).
-
-  In a terminal, make sure you are in `knative-minikube-environment` root folder and run the script below
+  In a terminal, make sure you are in `knative-minikube-environment` root folder and run the scripts below
   ```
   ./install-knative-serving-kourier.sh
+  ./install-knative-eventing-kafka.sh
   ```
   
   To verify Readiness and Status of all pods by running
@@ -39,35 +39,50 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
   ```
   > Press `Ctrl+C` to stop the watching mode
   
-  Wait for all pods in `knative-serving` and `kourier-system` namespaces to the have `Running` value in the `STATUS` column before running the examples.
+  Wait for all pods in `knative-serving`, `kourier-system`, `knative-eventing`, and `kafka` namespaces to the have `Running` value in the `STATUS` column before running the examples.
 
   You should see something like
   ```
-  NAMESPACE         NAME                                      READY   STATUS    RESTARTS        AGE
-  knative-serving   activator-66bcc86b86-p5xwd                1/1     Running   0               4m53s
-  knative-serving   autoscaler-6b88c666fc-2phfx               1/1     Running   0               4m53s
-  knative-serving   controller-59c69fb58d-c5ntd               1/1     Running   0               4m53s
-  knative-serving   domain-mapping-5c4b8d79f-tjqkt            1/1     Running   0               4m53s
-  knative-serving   domainmapping-webhook-777f47b8bb-7jmsv    1/1     Running   0               4m53s
-  knative-serving   net-kourier-controller-74dc74797-jtxcl    1/1     Running   0               4m51s
-  knative-serving   webhook-6d6d8c5b4f-xhscq                  1/1     Running   0               4m53s
-  kourier-system    3scale-kourier-gateway-75c75885fd-w8jnk   1/1     Running   0               4m51s
-  kube-system       coredns-64897985d-hxppc                   1/1     Running   0               5m42s
-  kube-system       etcd-minikube                             1/1     Running   0               5m57s
-  kube-system       kube-apiserver-minikube                   1/1     Running   0               5m54s
-  kube-system       kube-controller-manager-minikube          1/1     Running   0               5m54s
-  kube-system       kube-proxy-kbf7w                          1/1     Running   0               5m42s
-  kube-system       kube-scheduler-minikube                   1/1     Running   0               5m54s
-  kube-system       storage-provisioner                       1/1     Running   1 (5m12s ago)   5m53s
+  NAMESPACE          NAME                                                 READY   STATUS    RESTARTS      AGE
+  kafka              my-cluster-entity-operator-67cbb8f86f-ngf2k          3/3     Running   0             115s
+  kafka              my-cluster-kafka-0                                   1/1     Running   0             2m18s
+  kafka              my-cluster-zookeeper-0                               1/1     Running   0             2m40s
+  kafka              strimzi-cluster-operator-7599bc57cb-d68f7            1/1     Running   0             2m52s
+  knative-eventing   eventing-controller-69897c84c-2t2tx                  1/1     Running   0             2m55s
+  knative-eventing   eventing-kafka-channel-controller-5f7558cf76-rh5qz   1/1     Running   0             80s
+  knative-eventing   eventing-webhook-79cdbf9b9f-ff48r                    1/1     Running   0             2m55s
+  knative-eventing   kafka-broker-dispatcher-67bb58bd94-4kdw7             1/1     Running   0             74s
+  knative-eventing   kafka-broker-receiver-844cd677dc-n6n79               1/1     Running   0             74s
+  knative-eventing   kafka-ch-controller-9695954cb-9rjjn                  1/1     Running   0             82s
+  knative-eventing   kafka-controller-7d8fc874f8-qzb99                    1/1     Running   0             77s
+  knative-eventing   kafka-controller-manager-5c947968f7-tlb7g            1/1     Running   0             83s
+  knative-eventing   kafka-webhook-7dfdcdfb78-7qnt4                       1/1     Running   0             80s
+  knative-eventing   kafka-webhook-eventing-cd65cb565-lj9wv               1/1     Running   0             77s
+  knative-serving    activator-66bcc86b86-v2ndd                           1/1     Running   0             3m19s
+  knative-serving    autoscaler-6b88c666fc-xs59k                          1/1     Running   0             3m18s
+  knative-serving    controller-59c69fb58d-8vdfj                          1/1     Running   0             3m18s
+  knative-serving    domain-mapping-5c4b8d79f-7xbz9                       1/1     Running   0             3m18s
+  knative-serving    domainmapping-webhook-777f47b8bb-6d4jm               1/1     Running   0             3m18s
+  knative-serving    net-kourier-controller-74dc74797-xrwzx               1/1     Running   0             3m16s
+  knative-serving    webhook-6d6d8c5b4f-cmc66                             1/1     Running   0             3m18s
+  kourier-system     3scale-kourier-gateway-75c75885fd-vvhk2              1/1     Running   0             3m16s
+  kube-system        coredns-64897985d-j7jln                              1/1     Running   4 (13h ago)   40h
+  kube-system        etcd-minikube                                        1/1     Running   4 (13h ago)   40h
+  kube-system        kube-apiserver-minikube                              1/1     Running   4 (13h ago)   40h
+  kube-system        kube-controller-manager-minikube                     1/1     Running   4 (13h ago)   40h
+  kube-system        kube-proxy-g2psf                                     1/1     Running   4 (13h ago)   40h
+  kube-system        kube-scheduler-minikube                              1/1     Running   4 (13h ago)   40h
+  kube-system        storage-provisioner                                  1/1     Running   8 (38m ago)   40h
   ```
 
 ## Shutdown Environment
 
-- ### Uninstall Knative Serving
+- ### Uninstall Knative Serving & Eventing
 
-  Run the script below to uninstall `Knative` and `Kourier`
+  In a terminal, make sure you are in `knative-minikube-environment` root folder and run the scripts below
   ```
   ./uninstall-knative-serving-kourier.sh
+  ./uninstall-knative-eventing-kafka.sh
   ```
 
 - ### Shutdown Minikube

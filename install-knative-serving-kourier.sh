@@ -3,8 +3,8 @@
 # This script was implemented based on the Knative Official Documentation (v1.3): https://knative.dev/docs/install/yaml-install/serving/install-serving-with-yaml/
 
 echo
-echo "Installing Knative Serving"
-echo "=========================="
+echo "Installing Knative Serving using YAML files"
+echo "==========================================="
 
 echo
 echo "Install the Knative Serving component"
