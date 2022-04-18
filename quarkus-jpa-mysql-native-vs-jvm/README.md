@@ -1,12 +1,12 @@
 # knative-minikube-environment
 ## `> quarkus-jpa-mysql-native-vs-jvm`
 
-The goal of this example is to run in `Knative` cluster an application called `quarkus-jpa-mysql` whose source code can be found in [ivangfr/graalvm-quarkus-micronaut-springboot](https://github.com/ivangfr/graalvm-quarkus-micronaut-springboot/tree/master/jpa-mysql/quarkus-jpa-mysql) repository.
+The goal of this example is to run in `Knative` cluster an application called `quarkus-jpa-mysql` whose source code can be found in the [ivangfr/graalvm-quarkus-micronaut-springboot](https://github.com/ivangfr/graalvm-quarkus-micronaut-springboot/tree/master/jpa-mysql/quarkus-jpa-mysql) repository.
 
 `quarkus-jpa-mysql` is a [`Quarkus`](https://quarkus.io/) Java Web application that exposes a REST API for managing `books`. It uses [`MySQL`](https://www.mysql.com/) as database.
 
 We will run two `quarkus-jpa-mysql` Docker images:
-- [`quarkus-jpa-mysql-jvm`](https://hub.docker.com/r/ivanfranchin/quarkus-jpa-mysql-jvm) whose Docker image was in order to have a container that runs the application in **JVM mode**;
+- [`quarkus-jpa-mysql-jvm`](https://hub.docker.com/r/ivanfranchin/quarkus-jpa-mysql-jvm) whose Docker image was built in order to have a container that runs the application in **JVM mode**;
 - [`quarkus-jpa-mysql-native`](https://hub.docker.com/r/ivanfranchin/quarkus-jpa-mysql-native) whose Docker image built using [`GraalVM Native Image`](https://www.graalvm.org/docs/reference-manual/native-image/) tool in order to have a container that runs the application in **Native mode**.
 
 More about the comparison between `JVM` vs `Native` and among Java Frameworks can be found in [ivangfr/graalvm-quarkus-micronaut-springboot](https://github.com/ivangfr/graalvm-quarkus-micronaut-springboot) repository.
@@ -19,14 +19,14 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 1. Open a terminal and navigate to `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder
 
-1. Let's pull `MySQL` and `quarkus-jpa-mysql` Docker images so when we install them, their images are already present
+1. Let's pull `MySQL` and `quarkus-jpa-mysql` Docker images
 
    1. Set `Minikube` host
       ```
       eval $(minikube docker-env)
       ```
       
-   1. Pull `MySQL` and `quarkus-jpa-mysql`'s docker images
+   1. Pull the following Docker images
       ```
       docker pull bitnami/mysql:5.7.37-debian-10-r85
       docker pull ivanfranchin/quarkus-jpa-mysql-native:1.0.0
@@ -63,29 +63,32 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    > helm delete --namespace dev my-mysql
    > ```
 
-## Install quarkus-jpa-mysql-native Service
+## Install quarkus-jpa-mysql services
 
 1. In a terminal and inside `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder, run the following command to install the service
    ```
    kubectl apply --namespace dev --filename yaml-files/quarkus-jpa-mysql-native-service.yaml
+   kubectl apply --namespace dev --filename yaml-files/quarkus-jpa-mysql-jvm-service.yaml
    ```
    > To delete run
    > ```
    > kubectl delete --namespace dev --filename yaml-files/quarkus-jpa-mysql-native-service.yaml
+   > kubectl delete --namespace dev --filename yaml-files/quarkus-jpa-mysql-jvm-service.yaml
    > ```
 
-1. You can watch the service installation by running
+1. You can watch the installation of the services by running
    ```
-   kubectl get pods --namespace dev --watch
+   kubectl get pods,ksvc --namespace dev --watch
    ```
    > Press `Ctrl+C` to stop the watching mode
 
-1. To get more details about the service run
+1. To get more details about the services run
    ```
    kubectl describe ksvc --namespace dev quarkus-jpa-mysql-native
+   kubectl describe ksvc --namespace dev quarkus-jpa-mysql-jvm
    ```
    
-1. Before continue, verify if the service is ready to receive requests
+1. Before continue, verify if the services are ready to receive requests
    ```
    kubectl get ksvc --namespace dev
    ```
@@ -109,75 +112,20 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
       - Get all books
         ```
         curl -i -H "Host: quarkus-jpa-mysql-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
+        curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
         ```
         
       - Add a book
         ```
         curl -i -H "Host: quarkus-jpa-mysql-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books \
-        -H "Content-Type: application/json" -d '{ "isbn": 123, "title": "Learn Knative" }'
+          -H "Content-Type: application/json" -d '{"isbn": 123, "title": "Learn Knative"}'
+        curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books \
+          -H "Content-Type: application/json" -d '{"isbn": 124, "title": "Learn Minikube"}'
         ```
       
       - Get a specific book
         ```
         curl -i -H "Host: quarkus-jpa-mysql-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books/1
-        ```
-
-## Install quarkus-jpa-mysql-jvm service
-
-1. In a terminal and inside `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder, run the following command to install the service
-   ```
-   kubectl apply --namespace dev --filename yaml-files/quarkus-jpa-mysql-jvm-service.yaml
-   ```
-   > To delete run
-   > ```
-   > kubectl delete --namespace dev --filename yaml-files/quarkus-jpa-mysql-jvm-service.yaml
-   > ```
-
-1. You can watch the service installation by running
-   ```
-   kubectl get pods --namespace dev --watch
-   ```
-   > Press `Ctrl+C` to stop the watching mode
-
-1. To get more details about the service run
-   ```
-   kubectl describe ksvc --namespace dev quarkus-jpa-mysql-jvm
-   ``` 
-   
-1. Before continue, verify if the service is ready to receive requests
-   ```
-   kubectl get ksvc --namespace dev
-   ```
-   
-   It must have the value `True` in the column `READY`. If not, wait a bit or check [Troubleshooting](https://github.com/ivangfr/knative-minikube-environment#troubleshooting).
-   
-1. Make requests to the service
-   
-   1. Get `Kourier` Ingress Gateway IP Address
-      ```
-      ../get-kourier-external-ip-address.sh
-      ```
-        
-   1. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
-      ```
-      EXTERNAL_IP_ADDRESS=...
-      ``` 
-
-   1. Sample of requests
-      
-      - Get all books
-        ```
-        curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
-        ```
-       
-      - Add a book
-        ```
-        curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books \
-        -H "Content-Type: application/json" -d '{ "isbn": 124, "title": "Learn Minikube" }'
-        ```
-     
-      - Get a specific book
-        ```
         curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books/2
         ```
 
