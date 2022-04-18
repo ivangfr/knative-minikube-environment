@@ -12,7 +12,6 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
 
 ## Examples
 
-- ### [helloworld-go](https://github.com/ivangfr/knative-minikube-environment/tree/master/helloworld-go)
 - ### [quarkus-jpa-mysql-native-vs-jvm](https://github.com/ivangfr/knative-minikube-environment/tree/master/quarkus-jpa-mysql-native-vs-jvm)
 - ### [springboot-producer-consumer-native](https://github.com/ivangfr/knative-minikube-environment/tree/master/springboot-producer-consumer-native)
 
