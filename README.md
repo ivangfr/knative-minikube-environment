@@ -2,7 +2,7 @@
 
 The goal of this project is to set up [`Knative`](https://knative.dev/docs/) in [`Minikube`](https://minikube.sigs.k8s.io/docs/start/) and, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
 
-The `Knative` setup was mostly based on the [**Knative Official Documentation (v1.3)**](https://knative.dev/docs/install/)
+The `Knative` setup was mostly based on the [**Knative Official Documentation (v1.9)**](https://knative.dev/docs/install/)
 
 ## Prerequisites
 
@@ -38,40 +38,34 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
   ```
   > Press `Ctrl+C` to stop the watching mode
   
-  Wait for all pods in `knative-serving`, `kourier-system`, `knative-eventing`, and `kafka` namespaces to the have `Running` value in the `STATUS` column before running the examples.
+  Wait for all pods in `kourier-system`, `knative-serving` and `knative-eventing` namespaces to the have `Running` value in the `STATUS` column before running the examples.
 
   You should see something like
   ```
-  NAMESPACE          NAME                                                 READY   STATUS    RESTARTS      AGE
-  kafka              my-cluster-entity-operator-67cbb8f86f-ngf2k          3/3     Running   0             115s
-  kafka              my-cluster-kafka-0                                   1/1     Running   0             2m18s
-  kafka              my-cluster-zookeeper-0                               1/1     Running   0             2m40s
-  kafka              strimzi-cluster-operator-7599bc57cb-d68f7            1/1     Running   0             2m52s
-  knative-eventing   eventing-controller-69897c84c-2t2tx                  1/1     Running   0             2m55s
-  knative-eventing   eventing-kafka-channel-controller-5f7558cf76-rh5qz   1/1     Running   0             80s
-  knative-eventing   eventing-webhook-79cdbf9b9f-ff48r                    1/1     Running   0             2m55s
-  knative-eventing   kafka-broker-dispatcher-67bb58bd94-4kdw7             1/1     Running   0             74s
-  knative-eventing   kafka-broker-receiver-844cd677dc-n6n79               1/1     Running   0             74s
-  knative-eventing   kafka-ch-controller-9695954cb-9rjjn                  1/1     Running   0             82s
-  knative-eventing   kafka-controller-7d8fc874f8-qzb99                    1/1     Running   0             77s
-  knative-eventing   kafka-controller-manager-5c947968f7-tlb7g            1/1     Running   0             83s
-  knative-eventing   kafka-webhook-7dfdcdfb78-7qnt4                       1/1     Running   0             80s
-  knative-eventing   kafka-webhook-eventing-cd65cb565-lj9wv               1/1     Running   0             77s
-  knative-serving    activator-66bcc86b86-v2ndd                           1/1     Running   0             3m19s
-  knative-serving    autoscaler-6b88c666fc-xs59k                          1/1     Running   0             3m18s
-  knative-serving    controller-59c69fb58d-8vdfj                          1/1     Running   0             3m18s
-  knative-serving    domain-mapping-5c4b8d79f-7xbz9                       1/1     Running   0             3m18s
-  knative-serving    domainmapping-webhook-777f47b8bb-6d4jm               1/1     Running   0             3m18s
-  knative-serving    net-kourier-controller-74dc74797-xrwzx               1/1     Running   0             3m16s
-  knative-serving    webhook-6d6d8c5b4f-cmc66                             1/1     Running   0             3m18s
-  kourier-system     3scale-kourier-gateway-75c75885fd-vvhk2              1/1     Running   0             3m16s
-  kube-system        coredns-64897985d-j7jln                              1/1     Running   4 (13h ago)   40h
-  kube-system        etcd-minikube                                        1/1     Running   4 (13h ago)   40h
-  kube-system        kube-apiserver-minikube                              1/1     Running   4 (13h ago)   40h
-  kube-system        kube-controller-manager-minikube                     1/1     Running   4 (13h ago)   40h
-  kube-system        kube-proxy-g2psf                                     1/1     Running   4 (13h ago)   40h
-  kube-system        kube-scheduler-minikube                              1/1     Running   4 (13h ago)   40h
-  kube-system        storage-provisioner                                  1/1     Running   8 (38m ago)   40h
+  NAMESPACE          NAME                                          READY   STATUS    RESTARTS   AGE
+  kafka              my-cluster-entity-operator-5b979bddd5-qwxjg   3/3     Running   0          33m
+  kafka              my-cluster-kafka-0                            1/1     Running   0          33m
+  kafka              my-cluster-zookeeper-0                        1/1     Running   0          34m
+  kafka              strimzi-cluster-operator-677bf6869f-zq8xc     1/1     Running   0          34m
+  knative-eventing   eventing-controller-7c6c467b7d-htlz9          1/1     Running   0          34m
+  knative-eventing   eventing-webhook-8cf445799-48l88              1/1     Running   0          34m
+  knative-eventing   kafka-controller-64d98ccf57-sbmrw             1/1     Running   0          32m
+  knative-eventing   kafka-webhook-eventing-65445c9888-lnp8f       1/1     Running   0          32m
+  knative-serving    activator-556dc846dd-x2ldt                    1/1     Running   0          37m
+  knative-serving    autoscaler-57c75556d6-ggp82                   1/1     Running   0          37m
+  knative-serving    controller-67d4f547cb-b25kz                   1/1     Running   0          37m
+  knative-serving    domain-mapping-6646494575-mpctj               1/1     Running   0          37m
+  knative-serving    domainmapping-webhook-5c89cfc845-9vrbl        1/1     Running   0          37m
+  knative-serving    net-kourier-controller-8448499dd8-64p4j       1/1     Running   0          37m
+  knative-serving    webhook-6f67fd848c-bs2xr                      1/1     Running   0          37m
+  kourier-system     3scale-kourier-gateway-c5f49456b-9nwrk        1/1     Running   0          37m
+  kube-system        coredns-787d4945fb-llqbg                      1/1     Running   1          17h
+  kube-system        etcd-minikube                                 1/1     Running   1          17h
+  kube-system        kube-apiserver-minikube                       1/1     Running   1          17h
+  kube-system        kube-controller-manager-minikube              1/1     Running   1          17h
+  kube-system        kube-proxy-4wpks                              1/1     Running   1          17h
+  kube-system        kube-scheduler-minikube                       1/1     Running   1          17h
+  kube-system        storage-provisioner                           1/1     Running   2          17h
   ```
 
 ## Shutdown Environment

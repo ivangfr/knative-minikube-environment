@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script was implemented based on the Knative Official Documentation (v1.3): https://knative.dev/docs/install/yaml-install/serving/install-serving-with-yaml/
+# This script was implemented based on the Knative Official Documentation (v1.9): https://knative.dev/docs/install/yaml-install/serving/install-serving-with-yaml/
 
 echo
 echo "Installing Knative Serving using YAML files"
@@ -14,13 +14,13 @@ echo
 echo "Install the required custom resources"
 echo "-------------------------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.3.2/serving-crds.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.9.2/serving-crds.yaml
 
 echo
 echo "Install the core components of Knative Serving"
 echo "----------------------------------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.3.2/serving-core.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.9.2/serving-core.yaml
 
 echo
 echo "Install a networking layer"
@@ -30,7 +30,7 @@ echo
 echo "Install the Knative Kourier controller"
 echo "--------------------------------------"
 
-kubectl apply --filename https://github.com/knative/net-kourier/releases/download/knative-v1.3.0/kourier.yaml
+kubectl apply --filename https://github.com/knative/net-kourier/releases/download/knative-v1.9.2/kourier.yaml
 
 echo
 echo "Configure Knative Serving to use Kourier by default"
@@ -46,6 +46,20 @@ echo "Fetch the External IP address or CNAME"
 echo "--------------------------------------"
 
 EXTERNAL_IP_ADDRESS=$(minikube ip):$(kubectl get service kourier --namespace kourier-system --output 'jsonpath={.spec.ports[?(@.port==80)].nodePort}')
+echo $EXTERNAL_IP_ADDRESS
+
+echo
+echo "Configure Temporary DNS"
+echo "======================="
+
+echo
+echo "Configure Knative to use a domain reachable from outside the cluster"
+echo "--------------------------------------------------------------------"
+
+kubectl patch configmap/config-domain \
+  --namespace knative-serving \
+  --type merge \
+  --patch '{"data":{"example.com":""}}'
 
 echo
 echo "Knative Serving setup completed successfully"

@@ -1,12 +1,12 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: springboot-consumer-api-native
+  name: springboot-kafka-consumer-native
 spec:
   template:
     spec:
       containers:
-        - image: ivanfranchin/springboot-consumer-api-native:1.0.0
+        - image: ivanfranchin/springboot-kafka-consumer-native:1.0.0
           env:
             - name: KAFKA_HOST
               value: my-cluster-kafka-bootstrap.kafka
@@ -20,12 +20,13 @@ kind: KafkaSource
 metadata:
   name: consumer-news
 spec:
+  consumerGroup: consumer-news-group
   bootstrapServers:
     - my-cluster-kafka-bootstrap.kafka:9092
   topics:
-    - springboot.news.native.json
+    - springboot.news.native
   sink:
     ref:
       apiVersion: serving.knative.dev/v1
       kind: Service
-      name: springboot-consumer-api-native
+      name: springboot-kafka-consumer-native

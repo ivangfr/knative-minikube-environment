@@ -1,12 +1,12 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: springboot-producer-api-native
+  name: springboot-kafka-producer-native
 spec:
   template:
     spec:
       containers:
-        - image: ivanfranchin/springboot-producer-api-native:1.0.0
+        - image: ivanfranchin/springboot-kafka-producer-native:1.0.0
           env:
             - name: KAFKA_HOST
               value: my-cluster-kafka-bootstrap.kafka
