@@ -138,17 +138,20 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 ### quarkus-jpa-mysql-native
 
-1. In a terminal, start watching the Pods in `dev` namespace. In my case, just `MySQL` is running.
+1. In a terminal, start watching the Pods in `dev` namespace.
    ```
-   $ kubectl get pods --namespace dev --watch
-   
+   kubectl get pods --namespace dev --watch
+   ```
+
+   In my case, just `MySQL` is running.
+   ```
    NAME         READY   STATUS    RESTARTS   AGE
    my-mysql-0   1/1     Running   0          6m19s
    ```
    
 1. In another terminal, run the `curl` command below to get all books.
    ```
-   $ curl -i -H "Host: quarkus-jpa-mysql-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
+   curl -i -H "Host: quarkus-jpa-mysql-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
    ```
 
    It should return something like
@@ -166,8 +169,6 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 1. In the first terminal, watch `quarkus-jpa-mysql-native` Pod changing from `ContainerCreating`, `Running` to `Terminating`
    ```
-   $ kubectl get pods --namespace dev --watch
-
    NAME         READY   STATUS    RESTARTS   AGE
    my-mysql-0   1/1     Running   0          6m19s
    quarkus-jpa-mysql-native-00001-deployment-75b6669784-bl22f   0/2     Pending   0          0s
@@ -184,17 +185,20 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    
 ### quarkus-jpa-mysql-jvm
 
-1. In a terminal, start watching the Pods in `dev` namespace. In my case, just `MySQL` is running.
+1. In a terminal, start watching the Pods in `dev` namespace.
    ```
-   $ kubectl get pods --namespace dev --watch
-   
+   kubectl get pods --namespace dev --watch
+   ```
+
+   In my case, just `MySQL` is running.
+   ```
    NAME         READY   STATUS    RESTARTS   AGE
    my-mysql-0   1/1     Running   0          9m21s
    ```
 
 1. In another terminal, run the `curl` command below to get all books.
    ```
-   $ curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
+   curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
    ```
 
    It should return something like
@@ -212,8 +216,6 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 1. In the first terminal, watch `quarkus-jpa-mysql-jvm` Pod changing from `ContainerCreating`, `Running` to `Terminating`
    ```
-   $ kubectl get pods --namespace dev --watch
-
    NAME         READY   STATUS    RESTARTS   AGE
    my-mysql-0   1/1     Running   0          9m21s
    quarkus-jpa-mysql-jvm-00001-deployment-6c8c4556ff-6jxhf   0/2     Pending   0          0s

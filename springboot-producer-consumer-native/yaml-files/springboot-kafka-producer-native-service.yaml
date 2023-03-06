@@ -14,3 +14,6 @@ spec:
               value: "9092"
             - name: SPRING_PROFILES_ACTIVE
               value: native
+          securityContext:
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false

@@ -121,7 +121,7 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 1. In a terminal, start watching the Pods in `dev` namespace. In my case, nothing is running.
    ```
-   $ kubectl get pods --namespace dev --watch
+   kubectl get pods --namespace dev --watch
    ```
 
 1. In another terminal, run the `curl` command below to post a news
@@ -135,33 +135,37 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    HTTP/1.1 200 OK
    content-length: 36
    content-type: text/plain;charset=UTF-8
-   date: Sun, 05 Mar 2023 23:51:46 GMT
-   x-envoy-upstream-service-time: 2031
+   date: Mon, 06 Mar 2023 10:33:27 GMT
+   x-envoy-upstream-service-time: 1976
    server: envoy
    
-   2e687533-91db-48ae-a6a7-3453fb648bf1
+   61df6cf1-9fd8-4c6a-9539-32b25f557e45
    ```
-   In this example, the response was returned in `2031 ms`
+   In this example, the response was returned in `1976 ms`
 
 1. In the first terminal, watch `springboot-kafka-producer-native` and `springboot-kafka-consumer-native` Pods changing from `ContainerCreating`, `Running` to `Terminating`
    ```
-   NAME                                                              READY   STATUS    RESTARTS   AGE
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   0/2     Pending   0          0s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   0/2     Pending   0          0s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   0/2     ContainerCreating   0          0s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   1/2     Running             0          2s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   2/2     Running             0          2s
-   springboot-kafka-consumer-native-00001-deployment-684f69d4hwwhm   0/2     Pending             0          0s
-   springboot-kafka-consumer-native-00001-deployment-684f69d4hwwhm   0/2     Pending             0          1s
-   springboot-kafka-consumer-native-00001-deployment-684f69d4hwwhm   0/2     ContainerCreating   0          1s
-   springboot-kafka-consumer-native-00001-deployment-684f69d4hwwhm   1/2     Running             0          2s
-   springboot-kafka-consumer-native-00001-deployment-684f69d4hwwhm   2/2     Running             0          2s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   2/2     Terminating         0          62s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   1/2     Terminating         0          90s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   0/2     Terminating         0          95s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   0/2     Terminating         0          95s
-   springboot-kafka-producer-native-00001-deployment-7855bb4bf4wnp   0/2     Terminating         0          95s
-   springboot-kafka-consumer-native-00001-deployment-684f69d4hwwhm   2/2     Terminating         0          2m20s
+   NAME         READY   STATUS    RESTARTS   AGE
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   0/2     Pending   0          0s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   0/2     Pending   0          1s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   0/2     ContainerCreating   0          1s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   1/2     Running             0          2s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   2/2     Running             0          2s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   0/2     Pending             0          0s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   0/2     Pending             0          0s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   0/2     ContainerCreating   0          0s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   1/2     Running             0          2s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   2/2     Running             0          2s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   2/2     Terminating         0          64s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   1/2     Terminating         0          91s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   0/2     Terminating         0          97s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   0/2     Terminating         0          97s
+   springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   0/2     Terminating         0          97s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   2/2     Terminating         0          2m18s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   1/2     Terminating         0          2m40s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   0/2     Terminating         0          2m50s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   0/2     Terminating         0          2m50s
+   springboot-kafka-consumer-native-00001-deployment-6f94cdc6m49rv   0/2     Terminating         0          2m50s
    ```
 
 ## Cleanup
