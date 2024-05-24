@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       containers:
-        - image: ivanfranchin/quarkus-jpa-mysql-native:1.0.0
+        - image: ivanfranchin/quarkus-jpa-mysql-native:latest
           env:
             - name: MYSQL_HOST
               value: my-mysql

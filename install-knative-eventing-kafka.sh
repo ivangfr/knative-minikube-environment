@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script was implemented based on the Knative Official Documentation (v1.9): https://knative.dev/docs/install/yaml-install/eventing/install-eventing-with-yaml/ and https://knative.dev/docs/eventing/sources/kafka-source/
+# This script was implemented based on the Knative Official Documentation (v1.14): https://knative.dev/docs/install/yaml-install/eventing/install-eventing-with-yaml/ and https://knative.dev/docs/eventing/sources/kafka-source/
 
 echo
 echo "Installing Knative Eventing using YAML files"
@@ -14,13 +14,13 @@ echo
 echo "Install the required custom resource definitions (CRDs)"
 echo "-------------------------------------------------------"
 
-kubectl apply --filename https://github.com/knative/eventing/releases/download/knative-v1.9.6/eventing-crds.yaml
+kubectl apply --filename https://github.com/knative/eventing/releases/download/knative-v1.14.1/eventing-crds.yaml
 
 echo
 echo "Install the core components of Eventing"
 echo "---------------------------------------"
 
-kubectl apply --filename https://github.com/knative/eventing/releases/download/knative-v1.9.6/eventing-core.yaml
+kubectl apply --filename https://github.com/knative/eventing/releases/download/knative-v1.14.1/eventing-core.yaml
 
 echo
 echo "Install Strimzi"
@@ -35,8 +35,8 @@ echo
 echo "Install the KafkaSource controller"
 echo "=================================="
 
-kubectl apply --filename https://github.com/knative-sandbox/eventing-kafka-broker/releases/download/knative-v1.9.3/eventing-kafka-controller.yaml
-kubectl apply --filename https://github.com/knative-sandbox/eventing-kafka-broker/releases/download/knative-v1.9.3/eventing-kafka-source.yaml
+kubectl apply --filename https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.14.3/eventing-kafka-controller.yaml
+kubectl apply --filename https://github.com/knative-extensions/eventing-kafka-broker/releases/download/knative-v1.14.3/eventing-kafka-source.yaml
 
 echo
 echo "Knative Eventing setup completed successfully"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# This script was implemented based on the Knative Official Documentation (v1.9): https://knative.dev/docs/install/yaml-install/serving/install-serving-with-yaml/
+# This script was implemented based on the Knative Official Documentation (v1.14): https://knative.dev/docs/install/yaml-install/serving/install-serving-with-yaml/
 
 echo
 echo "Installing Knative Serving using YAML files"
@@ -14,13 +14,13 @@ echo
 echo "Install the required custom resources"
 echo "-------------------------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.9.2/serving-crds.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-crds.yaml
 
 echo
 echo "Install the core components of Knative Serving"
 echo "----------------------------------------------"
 
-kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.9.2/serving-core.yaml
+kubectl apply --filename https://github.com/knative/serving/releases/download/knative-v1.14.0/serving-core.yaml
 
 echo
 echo "Install a networking layer"
@@ -30,7 +30,7 @@ echo
 echo "Install the Knative Kourier controller"
 echo "--------------------------------------"
 
-kubectl apply --filename https://github.com/knative/net-kourier/releases/download/knative-v1.9.2/kourier.yaml
+kubectl apply --filename https://github.com/knative/net-kourier/releases/download/knative-v1.14.0/kourier.yaml
 
 echo
 echo "Configure Knative Serving to use Kourier by default"

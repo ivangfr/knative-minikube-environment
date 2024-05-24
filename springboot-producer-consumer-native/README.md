@@ -26,27 +26,27 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 ## Start Environment
 
-1. Open a terminal and navigate to `knative-minikube-environment/springboot-producer-consumer-native` folder
+1. Open a terminal and navigate to `knative-minikube-environment/springboot-producer-consumer-native` folder.
 
-1. Let's pull `springboot-kafka-producer-native` and `springboot-kafka-consumer-native` Docker images
+2. Let's pull `springboot-kafka-producer-native` and `springboot-kafka-consumer-native` Docker images
 
-   1. Set `Minikube` host
+   1. Set `Minikube` host:
       ```
       eval $(minikube docker-env)
       ```
       
-   1. Pull the following Docker images
+   2. Pull the following Docker images:
       ```
-      docker pull ivanfranchin/springboot-kafka-producer-native:1.0.0
-      docker pull ivanfranchin/springboot-kafka-consumer-native:1.0.0
+      docker pull ivanfranchin/springboot-kafka-producer-native:latest
+      docker pull ivanfranchin/springboot-kafka-consumer-native:latest
       ```
       
-   1. Get back to Host machine Docker Daemon
+   3. Get back to Host machine Docker Daemon:
       ```
       eval $(minikube docker-env -u)
       ```
 
-1. Create the `dev` namespace 
+3. Create the `dev` namespace:
    ```
    kubectl create namespace dev
    ```
@@ -57,30 +57,30 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 ## Install springboot-producer-consumer-native services
 
-1. In a terminal and inside `knative-minikube-environment/springboot-producer-consumer-native` folder, run the following commands
+1. In a terminal and inside `knative-minikube-environment/springboot-producer-consumer-native` folder, run the following commands:
    ```
    kubectl apply --namespace dev --filename yaml-files/springboot-kafka-producer-native-service.yaml
    kubectl apply --namespace dev --filename yaml-files/springboot-kafka-consumer-native-service.yaml
    ```
-   > To delete run
+   > To delete run:
    > ```
    > kubectl delete --namespace dev --filename yaml-files/springboot-kafka-producer-native-service.yaml
    > kubectl delete --namespace dev --filename yaml-files/springboot-kafka-consumer-native-service.yaml
    > ```
 
-1. You can watch the installation of the services by running
+2. You can watch the installation of the services by running:
    ```
    kubectl get pods --namespace dev --watch
    ```
-   > Press `Ctrl+C` to stop the watching mode
+   > Press `Ctrl+C` to stop the watching mode.
 
-1. To get more details about the services run
+3. To get more details about the services run:
    ```
    kubectl describe ksvc --namespace dev springboot-kafka-producer-native
    kubectl describe ksvc --namespace dev springboot-kafka-consumer-native
    ```
    
-1. Before continue, verify if the services are ready to receive requests
+4. Before continue, verify if the services are ready to receive requests:
    ```
    kubectl get ksvc --namespace dev
    ```
@@ -92,25 +92,25 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    springboot-kafka-producer-native   http://springboot-kafka-producer-native.dev.example.com   springboot-kafka-producer-native-00001   springboot-kafka-producer-native-00001   True
    ```
    
-1. Make post request to `springboot-kafka-producer-native`
+5. Make post request to `springboot-kafka-producer-native`
    
    1. Get `Kourier` Ingress Gateway IP Address
       ```
       ../get-kourier-external-ip-address.sh
       ```
 
-   1. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
+   2. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
       ```
       EXTERNAL_IP_ADDRESS=...
       ``` 
 
-   1. Post news
+   3. Post news
       ```
       curl -i -H "Host: springboot-kafka-producer-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/news \
         -H "Content-Type: application/json" -d '{"source": "CNN", "title": " Palmeiras wins Libertadores in 2021"}'
       ```
    
-   1. Check Pod logs
+   4. Check Pod logs
       ```
       kubectl get pods --namespace dev
       kubectl logs --namespace dev <springboot-kafka-producer-native-pod-name> user-container
@@ -124,13 +124,13 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    kubectl get pods --namespace dev --watch
    ```
 
-1. In another terminal, run the `curl` command below to post a news
+2. In another terminal, run the `curl` command below to post a news:
    ```
    curl -i -H "Host: springboot-kafka-producer-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/news \
      -H "Content-Type: application/json" -d '{"source": "CNN", "title": " Palmeiras wins Libertadores in 2021"}'
    ```
 
-   It should return something like
+   It should return something like:
    ```
    HTTP/1.1 200 OK
    content-length: 36
@@ -141,9 +141,9 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    
    61df6cf1-9fd8-4c6a-9539-32b25f557e45
    ```
-   In this example, the response was returned in `1976 ms`
+   In this example, the response was returned in `1976 ms`.
 
-1. In the first terminal, watch `springboot-kafka-producer-native` and `springboot-kafka-consumer-native` Pods changing from `ContainerCreating`, `Running` to `Terminating`
+3. In the first terminal, watch `springboot-kafka-producer-native` and `springboot-kafka-consumer-native` Pods changing from `ContainerCreating`, `Running` to `Terminating`:
    ```
    NAME         READY   STATUS    RESTARTS   AGE
    springboot-kafka-producer-native-00001-deployment-5d86f765q6hxb   0/2     Pending   0          0s
@@ -170,9 +170,9 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 ## Cleanup
 
-- In a terminal, make sure you are inside `knative-minikube-environment/springboot-producer-consumer-native` folder
+- In a terminal, make sure you are inside `knative-minikube-environment/springboot-producer-consumer-native` folder;
 
-- Run the following script to uninstall everything installed in this example
+- Run the following script to uninstall everything installed in this example:
   ```
   ./cleanup.sh
   ```

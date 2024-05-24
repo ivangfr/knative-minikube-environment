@@ -19,76 +19,76 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
 
 1. Open a terminal and navigate to `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder
 
-1. Let's pull `MySQL` and `quarkus-jpa-mysql` Docker images
+2. Let's pull `MySQL` and `quarkus-jpa-mysql` Docker images
 
-   1. Set `Minikube` host
+   1. Set `Minikube` host:
       ```
       eval $(minikube docker-env)
       ```
       
-   1. Pull the following Docker images
+   2. Pull the following Docker images:
       ```
-      docker pull bitnami/mysql:5.7.41-debian-11-r13
-      docker pull ivanfranchin/quarkus-jpa-mysql-native:1.0.0
-      docker pull ivanfranchin/quarkus-jpa-mysql-jvm:1.0.0
+      docker pull bitnami/mysql:5.7.43-debian-11-r73
+      docker pull ivanfranchin/quarkus-jpa-mysql-native:latest
+      docker pull ivanfranchin/quarkus-jpa-mysql-jvm:latest
       ```
       
-   1. Get back to Host machine Docker Daemon
+   3. Get back to Host machine Docker Daemon:
       ```
       eval $(minikube docker-env -u)
       ```
 
-1. Create the `dev` namespace 
+3. Create the `dev` namespace:
    ```
    kubectl create namespace dev
    ```
-   > To delete run
+   > To delete run:
    > ```
    > kubectl delete namespace dev
    > ```
 
-1. Run the `helm` command below to install `MySQL` using its Helm Chart
+4. Run the `helm` command below to install `MySQL` using its Helm Chart:
    ```
    helm install my-mysql \
      --namespace dev \
-     --set image.tag=5.7.41-debian-11-r13 \
+     --set image.tag=5.7.43-debian-11-r73 \
      --set auth.rootPassword=secret \
      --set auth.database=bookdb_native \
      --set primary.persistence.enabled=false \
      --set secondary.replicaCount=0 \
      bitnami/mysql
    ```
-   > To delete run
+   > To delete run:
    > ```
    > helm delete --namespace dev my-mysql
    > ```
 
 ## Install quarkus-jpa-mysql services
 
-1. In a terminal and inside `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder, run the following command to install the service
+1. In a terminal and inside `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder, run the following command to install the service:
    ```
    kubectl apply --namespace dev --filename yaml-files/quarkus-jpa-mysql-native-service.yaml
    kubectl apply --namespace dev --filename yaml-files/quarkus-jpa-mysql-jvm-service.yaml
    ```
-   > To delete run
+   > To delete run:
    > ```
    > kubectl delete --namespace dev --filename yaml-files/quarkus-jpa-mysql-native-service.yaml
    > kubectl delete --namespace dev --filename yaml-files/quarkus-jpa-mysql-jvm-service.yaml
    > ```
 
-1. You can watch the installation of the services by running
+2. You can watch the installation of the services by running:
    ```
    kubectl get pods --namespace dev --watch
    ```
-   > Press `Ctrl+C` to stop the watching mode
+   > Press `Ctrl+C` to stop the watching mode.
 
-1. To get more details about the services run
+3. To get more details about the services run:
    ```
    kubectl describe ksvc --namespace dev quarkus-jpa-mysql-native
    kubectl describe ksvc --namespace dev quarkus-jpa-mysql-jvm
    ```
    
-1. Before continue, verify if the services are ready to receive requests
+4. Before continue, verify if the services are ready to receive requests:
    ```
    kubectl get ksvc --namespace dev
    ```
@@ -100,19 +100,19 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    springboot-kafka-producer-native   http://springboot-kafka-producer-native.dev.example.com   springboot-kafka-producer-native-00001   springboot-kafka-producer-native-00001   True
    ```
    
-1. Make requests to the service
+5. Make requests to the service
    
-   1. Get `Kourier` Ingress Gateway IP Address
+   1. Get `Kourier` Ingress Gateway IP Address:
       ```
       ../get-kourier-external-ip-address.sh
       ```
 
-   1. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal
+   2. Set the `EXTERNAL_IP_ADDRESS` environment variable in a terminal:
       ```
       EXTERNAL_IP_ADDRESS=...
       ``` 
 
-   1. Sample of requests
+   3. Sample of requests
    
       - Get all books
         ```
@@ -149,12 +149,12 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    my-mysql-0   1/1     Running   0          6m19s
    ```
    
-1. In another terminal, run the `curl` command below to get all books.
+2. In another terminal, run the `curl` command below to get all books.
    ```
    curl -i -H "Host: quarkus-jpa-mysql-native.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
    ```
 
-   It should return something like
+   It should return something like:
    ```
    HTTP/1.1 200 OK
    content-length: 98
@@ -165,9 +165,9 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    
    [{"id":"1","isbn":"123","title":"Learn Knative"},{"id":"2","isbn":"124","title":"Learn Minikube"}]
    ```
-   In this example, the response was returned in `2349 ms`
+   In this example, the response was returned in `2349 ms`.
 
-1. In the first terminal, watch `quarkus-jpa-mysql-native` Pod changing from `ContainerCreating`, `Running` to `Terminating`
+3. In the first terminal, watch `quarkus-jpa-mysql-native` Pod changing from `ContainerCreating`, `Running` to `Terminating`:
    ```
    NAME         READY   STATUS    RESTARTS   AGE
    my-mysql-0   1/1     Running   0          6m19s
@@ -196,12 +196,12 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    my-mysql-0   1/1     Running   0          9m21s
    ```
 
-1. In another terminal, run the `curl` command below to get all books.
+2. In another terminal, run the `curl` command below to get all books.
    ```
    curl -i -H "Host: quarkus-jpa-mysql-jvm.dev.example.com" http://$EXTERNAL_IP_ADDRESS/api/books
    ```
 
-   It should return something like
+   It should return something like:
    ```
    HTTP/1.1 200 OK
    content-length: 98
@@ -214,7 +214,7 @@ First, start `Minikube` and install `Knative` as explained at [Start Environment
    ```
    In this example, the response was returned in `5084 ms`
 
-1. In the first terminal, watch `quarkus-jpa-mysql-jvm` Pod changing from `ContainerCreating`, `Running` to `Terminating`
+3. In the first terminal, watch `quarkus-jpa-mysql-jvm` Pod changing from `ContainerCreating`, `Running` to `Terminating`:
    ```
    NAME         READY   STATUS    RESTARTS   AGE
    my-mysql-0   1/1     Running   0          9m21s
@@ -249,9 +249,9 @@ Subsequent requests will be handled pretty fast because the `Pod`s responsible t
 
 ## Cleanup
 
-- In a terminal, make sure you are inside `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder
+- In a terminal, make sure you are inside `knative-minikube-environment/quarkus-jpa-mysql-native-vs-jvm` folder;
 
-- Run the following script to uninstall everything installed in this example
+- Run the following script to uninstall everything installed in this example:
   ```
   ./cleanup.sh
   ```

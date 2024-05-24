@@ -2,7 +2,7 @@
 
 The goal of this project is to set up [`Knative`](https://knative.dev/docs/) in [`Minikube`](https://minikube.sigs.k8s.io/docs/start/) and, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
 
-The `Knative` setup was mostly based on the [**Knative Official Documentation (v1.9)**](https://knative.dev/docs/install/)
+The `Knative` setup was mostly based on the [**Knative Official Documentation (v1.14)**](https://knative.dev/docs/install/)
 
 ## Prerequisites
 
@@ -38,7 +38,7 @@ The `Knative` setup was mostly based on the [**Knative Official Documentation (v
   ```
   > Press `Ctrl+C` to stop the watching mode
   
-  Wait for all pods in `kourier-system`, `knative-serving` and `knative-eventing` namespaces to the have `Running` value in the `STATUS` column before running the examples.
+  Wait for all pods in `kourier-system`, `knative-serving` and `knative-eventing` namespaces to have `Running` value in the `STATUS` column before running the examples.
 
   You should see something like
   ```
