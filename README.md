@@ -4,6 +4,10 @@ The goal of this project is to set up [`Knative`](https://knative.dev/docs/) in 
 
 The `Knative` setup was mostly based on the [**Knative Official Documentation (v1.14)**](https://knative.dev/docs/install/)
 
+## Proof-of-Concepts & Articles
+
+On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-Concepts (PoCs) and articles. You can easily search for the technology you are interested in by using the filter. Who knows, perhaps I have already implemented a PoC or written an article about what you are looking for.
+
 ## Prerequisites
 
 - [`Kubectl`](https://kubernetes.io/docs/tasks/tools/#kubectl)
