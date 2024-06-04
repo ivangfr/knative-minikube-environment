@@ -1,6 +1,6 @@
 # knative-minikube-environment
 
-The goal of this project is to set up [`Knative`](https://knative.dev/docs/) in [`Minikube`](https://minikube.sigs.k8s.io/docs/start/) and, deploy and run some [Serverless](https://martinfowler.com/articles/serverless.html) applications.
+The goal of this project is to set up [`Knative`](https://knative.dev/docs/) on [`Minikube`](https://minikube.sigs.k8s.io/docs/start/), enabling the deployment and execution of [Serverless](https://martinfowler.com/articles/serverless.html) applications.
 
 The `Knative` setup was mostly based on the [**Knative Official Documentation (v1.14)**](https://knative.dev/docs/install/)
 
